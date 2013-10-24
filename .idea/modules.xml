@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RoboLock/RoboLock.iml" filepath="$PROJECT_DIR$/RoboLock/RoboLock.iml" />
       <module fileurl="file://$PROJECT_DIR$/RoboLockProject.iml" filepath="$PROJECT_DIR$/RoboLockProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RoboLockSample/RoboLockSample.iml" filepath="$PROJECT_DIR$/RoboLockSample/RoboLockSample.iml" />
     </modules>
   </component>
 </project>

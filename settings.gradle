@@ -1,1 +1,1 @@
-include ':RoboLock'
+include ':RoboLock', ':RoboLockSample'
