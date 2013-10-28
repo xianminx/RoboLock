@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 /**
  * Created by lucas on 10/24/13.
@@ -20,15 +21,20 @@ import android.content.SharedPreferences;
  * <p/>
  * To manually lock/unlock:
  * call RoboLock.lock() and RoboLock.unlock().
- *
+ * <p/>
  * call RoboLock.init(context) before using this class.
  */
 public class RoboLock {
-    private static long DEFAULT_LOCK_TIME = 3*60*1000;// 3 MINUTES
+
     private static SharedPreferences lockSP;
 
+    private static final String TAG = RoboLock.class.getName();
 
-
+    public static void init(Context context) {
+        if (lockSP == null) {
+            lockSP = PreferenceManager.getDefaultSharedPreferences(context);
+        }
+    }
 
     /*
     * Call this method in every Activity's onResume() if you want to lock the whole app. Other wise only call this in the Activity's onResume you want to lock.
@@ -42,18 +48,18 @@ public class RoboLock {
      */
     public static void onPause() {
         // save the Activity's onPause time.
-        lockSP.edit().putLong("onPause", System.currentTimeMillis()).commit();
+        lockSP.edit().putLong(SettingsActivity.KEY_PREF_ROBOLOCK_LAST_ONPAUSE, System.currentTimeMillis()).commit();
     }
 
     /**
      * This brings up the LockActivity. Call finish() the Activity once the user pass the authentication.
-     * @param activity
+     *
+     * @param activity In which activity to lock the app.
      */
     public static void lock(Activity activity) {
         // show LockActivity
         showLockActivity(activity);
     }
-
 
 
     public static void setLocker() {
@@ -67,9 +73,8 @@ public class RoboLock {
      * @param activity The activity to be launched.
      */
     private static void checkLock(Activity activity) {
-        long timeElapsed = System.currentTimeMillis()-getLastOnPauseTime(activity);
-
-        if (isLockEnabled(activity) == true && timeElapsed < getAutoLockTime(activity))  {
+        long timeElapsed = System.currentTimeMillis() - getLastOnPauseTime(activity);
+        if (lockSP.getBoolean(SettingsActivity.KEY_PREF_ROBOLOCK_AUTO_LOCK_ENABLED, false) && timeElapsed > getAutoLockTime(activity)) {
             showLockActivity(activity);
         }
     }
@@ -81,24 +86,17 @@ public class RoboLock {
         activity.startActivity(intent);
     }
 
-    public static void init(Context context) {
-        if (lockSP == null) {
-            lockSP = context.getSharedPreferences("robolock", Context.MODE_PRIVATE);
+    private static long getLastOnPauseTime(Context context) {
+        return lockSP.getLong(SettingsActivity.KEY_PREF_ROBOLOCK_LAST_ONPAUSE, 0L);
+    }
+
+    public static long getAutoLockTime(Context context) {
+        long time = SettingsActivity.DEFAULT_LOCK_TIME;
+        try {
+            String minutes = lockSP.getString(SettingsActivity.KEY_PREF_ROBOLOCK_AUTO_LOCK_TIME, "error");
+            time = Integer.parseInt(minutes) * 60 * 1000;
+        } catch (Exception e) {
         }
-    }
-
-    public static boolean isLockEnabled(Context context) {
-        return lockSP.getBoolean("enabled", false);
-    }
-
-    private static long getLastOnPauseTime(Context context){
-        return lockSP.getLong("onPause", 0L);
-    }
-
-    public static long getAutoLockTime(Context context){
-    return lockSP.getLong("lockTime", DEFAULT_LOCK_TIME);
-    }
-    public static void setAutoLockTime(long time) {
-        lockSP.edit().putLong("lockTime", time).commit();
+        return time;
     }
 }

@@ -1,4 +1,4 @@
-package org.lucas.robolock;
+package org.lucas.robolock.example;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,10 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import org.lucas.robolock.R;
+import org.lucas.robolock.RoboLock;
+import org.lucas.robolock.SettingsActivity;
 
 public class MainActivity extends Activity{
 

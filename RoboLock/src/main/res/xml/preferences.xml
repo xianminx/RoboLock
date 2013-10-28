@@ -5,15 +5,16 @@
         android:title="RoboLock">
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="pref_robolock_autolock"
-            android:summary="Requires authentication when launching the app."
+            android:key="pref_robolock_auto_lock_enabled"
+            android:summary="Require authentication"
             android:title="Auto lock" />
         <EditTextPreference
             android:defaultValue="3"
-            android:dependency="pref_robolock_enabled"
-            android:dialogTitle="Set Auto Lock Time"
+            android:dependency="pref_robolock_auto_lock_enabled"
+            android:dialogTitle="Wait Time"
             android:key="pref_robolock_auto_lock_time"
-            android:summary="0 means lock immediately, and -1 means no automatic lock. A positive integer means lock the screen only when the app is switch to the background and wait for that minutes"
-            android:title="Auto lock time" />
+            android:summary=""
+            android:title="Wait time"
+            android:numeric="integer"/>
     </PreferenceCategory>
 </PreferenceScreen>

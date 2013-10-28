@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-public class LockActivity extends Activity{
+/**
+ * Show this activity to shade the actual activity so the user is asked to pass the authentication on this activity screen.
+ */
+public class LockActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +21,7 @@ public class LockActivity extends Activity{
         });
     }
 
-    private void unlock(){
+    private void unlock() {
         finish();
     }
 }
